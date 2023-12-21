@@ -10,6 +10,11 @@ public class FootballLeagueDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        base.OnConfiguring(optionsBuilder);
+        //SQL Server example
+        //optionsBuilder.UseSqlServer(
+            //"Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=FootballLeague_EfCore; Encrypt=False");
+        
+        //This will be moved out to a settings file. DO NOT DO THAT IN REAL LIFE.
+        optionsBuilder.UseSqlite($"Data Source=FootballLeague_EfCore.db");
     }
 }
