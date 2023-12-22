@@ -5,9 +5,19 @@ using Microsoft.EntityFrameworkCore;
 using var context = new FootballLeagueDbContext();
 
 
-await GetAllTeams();
-await GetOneTeam();
+//await GetAllTeams();
+//await GetOneTeam();
+await GetFilteredTeams();
 
+
+async Task GetFilteredTeams()
+{
+    Console.WriteLine("Enter Desired Team");
+    var desiredTeam = Console.ReadLine();
+    //Select all records that meet a condition
+    var teamsFiltered = await context.Teams.Where(q => q.Name == desiredTeam).ToListAsync();
+    foreach (var team in teamsFiltered) Console.WriteLine(team.Name);
+}
 
 // Select all teams
 async Task GetAllTeams()
