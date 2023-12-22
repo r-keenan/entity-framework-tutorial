@@ -1,5 +1,6 @@
 using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace EntityFrameworkCore.Data;
 
@@ -15,7 +16,9 @@ public class FootballLeagueDbContext : DbContext
             //"Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=FootballLeague_EfCore; Encrypt=False");
         
         //This will be moved out to a settings file. DO NOT DO THAT IN REAL LIFE.
-        optionsBuilder.UseSqlite($"Data Source=FootballLeague_EfCore.db");
+        // Added logging of queries
+        // EnableSensitiveDataLogging and EnableDetailErrors is only for this tutorial. DO NOT DO THIS IN REAL LIFE.
+        optionsBuilder.UseSqlite($"Data Source=FootballLeague_EfCore.db").LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging().EnableDetailedErrors();
     }
 
     // Creating seed data
