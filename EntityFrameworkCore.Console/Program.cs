@@ -7,8 +7,30 @@ using var context = new FootballLeagueDbContext();
 
 //await GetAllTeams();
 //await GetOneTeam();
-await GetFilteredTeams();
+//await GetFilteredTeams();
+await GetAggregateMethods();
 
+async Task GetAggregateMethods()
+{
+    // Count
+    var numberOfTeams = await context.Teams.CountAsync();
+    Console.WriteLine(numberOfTeams);
+
+    var numberOfTeamsFiltered = await context.Teams.CountAsync(q => q.Name.Contains("Huskers"));
+    Console.WriteLine(numberOfTeamsFiltered);
+    // Max
+    var maxTeamId = await context.Teams.MaxAsync(t => t.Id);
+    Console.WriteLine(maxTeamId);
+    // Min
+    var minTeamId = await context.Teams.MinAsync(t => t.Id);
+    Console.WriteLine(minTeamId);
+    // Average
+    var averageTeamId = await context.Teams.AverageAsync(t => t.Id);
+    Console.WriteLine(averageTeamId);
+    // Sum
+    var sumTeamId = await context.Teams.SumAsync(t => t.Id);
+    Console.WriteLine(sumTeamId);
+}
 
 async Task GetFilteredTeams()
 {
