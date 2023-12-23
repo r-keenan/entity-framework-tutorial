@@ -8,7 +8,20 @@ using var context = new FootballLeagueDbContext();
 //await GetAllTeams();
 //await GetOneTeam();
 //await GetFilteredTeams();
-await GetAggregateMethods();
+//await GetAggregateMethods();
+await GetGroupedMethods();
+
+async Task GetGroupedMethods()
+{
+    var groupedTeams = await context.Teams.GroupBy(t => new { t.CreatedDate.Date, t.Name }).ToListAsync();
+
+    foreach (var group in groupedTeams)
+    {
+        Console.WriteLine(group.Key);
+        foreach (var team in group) Console.WriteLine(team.Name);
+    }
+}
+
 
 async Task GetAggregateMethods()
 {
