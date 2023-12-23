@@ -17,6 +17,11 @@ async Task GetFilteredTeams()
     //Select all records that meet a condition
     var teamsFiltered = await context.Teams.Where(q => q.Name == desiredTeam).ToListAsync();
     foreach (var team in teamsFiltered) Console.WriteLine(team.Name);
+
+    Console.WriteLine("Enter Search Term");
+    var searchTerm = Console.ReadLine();
+    var partialMatches = await context.Teams.Where(q => q.Name.Contains(searchTerm)).ToListAsync();
+    foreach (var match in partialMatches) Console.WriteLine(match.Name);
 }
 
 // Select all teams
