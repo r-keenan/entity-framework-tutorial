@@ -3,15 +3,60 @@ using Microsoft.EntityFrameworkCore;
 
 // Create instance of context
 using var context = new FootballLeagueDbContext();
-
+Console.WriteLine(context.DbPath);
 
 //await GetAllTeams();
 //await GetOneTeam();
 //await GetFilteredTeams();
 //await GetAggregateMethods();
-await GetGroupedMethods();
+//await GetGroupedMethod();
+//await GetOrderedMethods();
+//await GetPagination();
+await GetSelectAndProjections();
 
-async Task GetGroupedMethods()
+async Task GetSelectAndProjections()
+{
+    
+}
+
+async Task GetPagination()
+{
+    var recordCount = 3;
+    var page = 0;
+
+    var next = true;
+    while (next)
+    {
+        var teams = await context.Teams.Skip(page * recordCount).Take(recordCount).ToListAsync();
+
+        foreach (var team in teams) Console.WriteLine(team.Name);
+        ;
+        Console.WriteLine("Enter 'true' for the next set of records, 'false' to exit");
+        next = Convert.ToBoolean(Console.ReadLine());
+
+        if (!next) break;
+        page += 1;
+    }
+}
+
+async Task GetOrderedMethods()
+{
+    var orderedTeamsAscending = await context.Teams.OrderBy(t => t.Name).ToListAsync();
+    foreach (var team in orderedTeamsAscending) Console.WriteLine(team.Name);
+
+    var orderedTeamsDescending = await context.Teams.OrderByDescending(t => t.Name).ToListAsync();
+    foreach (var team in orderedTeamsDescending) Console.WriteLine(team.Name);
+
+    // Get record with maximum value
+    var maxBy = context.Teams.MaxBy(q => q.Id);
+    Console.WriteLine(maxBy);
+
+    // Get record with minimum value
+    var minBy = context.Teams.MinBy(b => b.Id);
+    Console.WriteLine(minBy);
+}
+
+async Task GetGroupedMethod()
 {
     var groupedTeams = await context.Teams.GroupBy(t => new { t.CreatedDate.Date, t.Name }).ToListAsync();
 
