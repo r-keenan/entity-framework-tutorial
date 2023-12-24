@@ -12,7 +12,15 @@ Console.WriteLine(context.DbPath);
 //await GetGroupedMethod();
 //await GetOrderedMethods();
 //await GetPagination();
-await GetSelectAndProjections();
+//await GetSelectAndProjections();
+
+async Task NoTracking()
+{
+    // No Tracking - EF Core tracks objects that are returned by queries. This is less useful in disconnect applications like APIs and Web apps
+    var teams = await context.Teams.AsNoTracking().ToListAsync();
+
+    foreach (var team in teams) Console.WriteLine(team.Name);
+}
 
 async Task GetSelectAndProjections()
 {
