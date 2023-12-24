@@ -15,6 +15,43 @@ Console.WriteLine(context.DbPath);
 //await GetPagination();
 //await GetSelectAndProjections();
 //await IqueryableVsList();
+await InsertRecords();
+
+async Task InsertRecords()
+{
+    //Simple Insert
+    var newCoach = new Coach
+    {
+        Name = "Bo Polini",
+        CreatedDate = DateTime.Now
+    };
+
+    //await context.Coaches.AddAsync(newCoach);
+    //await context.SaveChangesAsync();
+
+    //Loop Insert
+    var newCoach1 = new Coach
+    {
+        Name = "Dave Davidson",
+        CreatedDate = DateTime.Now
+    };
+    var coaches = new List<Coach>
+    {
+        newCoach1,
+        newCoach
+    };
+    //foreach (var coach in coaches) await context.Coaches.AddAsync(coach);
+    //All or nothing change.
+    //Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+    //await context.SaveChangesAsync();
+    // You can access the id of each record after you added it to the database.
+    //foreach (var coach in coaches) Console.WriteLine($"{coach.Id} - {coach.Name}");
+
+    //Batch Insert
+    await context.Coaches.AddRangeAsync(coaches);
+    await context.SaveChangesAsync();
+    foreach (var coach in coaches) Console.WriteLine($"{coach.Id} - {coach.Name}");
+}
 
 async Task IqueryableVsList()
 {
