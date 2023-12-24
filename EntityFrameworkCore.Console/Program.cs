@@ -15,7 +15,39 @@ Console.WriteLine(context.DbPath);
 //await GetPagination();
 //await GetSelectAndProjections();
 //await IqueryableVsList();
-await InsertRecords();
+//await InsertRecords();
+//await UpdateRecords();
+//DeleteRecords();
+
+async Task ExecuteDeleteUpdate()
+{
+    // Old way
+    var coaches = await context.Coaches.Where(q => q.Name == "Ross Keenan").ToListAsync();
+    context.RemoveRange(coaches);
+    await context.SaveChangesAsync();
+
+    // new way - execute right off the bat. Does not wait for SaveChanges()
+    await context.Coaches.Where(q => q.Name == "Ross Keenan").ExecuteDeleteAsync();
+
+    // Execute Update - executes right away. does not wait on SaveChanges()
+    // You would actually want to update the ModifiedDate field and not CreatedAt, but there is not a ModifiedDate field on this db table.
+    await context.Coaches.Where(q => q.Name == "Ross Keenan")
+        .ExecuteUpdateAsync(set =>
+            set.SetProperty(prop => prop.Name, "Mike Jones").SetProperty(prop => prop.CreatedDate, DateTime.Now));
+}
+
+async Task DeleteRecords()
+{
+    var coach = await context.Coaches.FindAsync(2);
+    if (coach != null) context.Remove(coach);
+}
+
+async Task UpdateRecords()
+{
+    var coach = await context.Coaches.FindAsync(2);
+    coach.Name = "Ross Keenan";
+    context.SaveChangesAsync();
+}
 
 async Task InsertRecords()
 {
