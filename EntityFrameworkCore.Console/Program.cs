@@ -1,4 +1,5 @@
 ﻿using EntityFrameworkCore.Data;
+using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
 
 // Create instance of context
@@ -13,6 +14,28 @@ Console.WriteLine(context.DbPath);
 //await GetOrderedMethods();
 //await GetPagination();
 //await GetSelectAndProjections();
+//await IqueryableVsList();
+
+async Task IqueryableVsList()
+{
+    Console.WriteLine("Enter '1' for Team with the Id 1 or '2' for teams that contain 'Sooners");
+    var option = Convert.ToInt32(Console.ReadLine());
+    List<Team> teamsAsList;
+
+    teamsAsList = await context.Teams.ToListAsync();
+
+    if (option == 1) teamsAsList = teamsAsList.Where(q => q.Id == 1).ToList();
+    else if (option == 2) teamsAsList = teamsAsList.Where(q => q.Name.Contains("Sooners")).ToList();
+
+    foreach (var team in teamsAsList) Console.WriteLine(team.Name);
+
+    var teamAsQueryable = context.Teams.AsQueryable();
+    if (option == 1) teamAsQueryable = teamAsQueryable.Where(q => q.Id == 1);
+    else if (option == 2) teamAsQueryable = teamAsQueryable.Where(q => q.Name.Contains("Sooners"));
+
+    teamsAsList = await teamAsQueryable.ToListAsync();
+    foreach (var team in teamsAsList) Console.WriteLine(team.Name);
+}
 
 async Task NoTracking()
 {
