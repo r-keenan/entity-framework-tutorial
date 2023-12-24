@@ -16,7 +16,18 @@ await GetSelectAndProjections();
 
 async Task GetSelectAndProjections()
 {
-    
+    var teams = await context.Teams.Select(x => x.Name).ToListAsync();
+
+    foreach (var teamName in teams) Console.WriteLine(teamName);
+
+    //Projection
+    var teams2 = await context.Teams.Select(x => new { x.Name, x.CreatedDate }).ToListAsync();
+
+    foreach (var team in teams2)
+    {
+        var creationTime = team.CreatedDate.TimeOfDay.ToString().Split('.');
+        Console.WriteLine($"Team {team.Name} was created on {team.CreatedDate.Date} at {creationTime[0]}.");
+    }
 }
 
 async Task GetPagination()
