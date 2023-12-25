@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 // Create instance of context
 using var context = new FootballLeagueDbContext();
+await context.Database.MigrateAsync();
 Console.WriteLine(context.DbPath);
 
 //await GetAllTeams();
