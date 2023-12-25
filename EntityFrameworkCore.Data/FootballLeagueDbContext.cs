@@ -17,6 +17,10 @@ public class FootballLeagueDbContext : DbContext
     public DbSet<Team> Teams { get; set; }
     public DbSet<Coach> Coaches { get; set; }
 
+    public DbSet<League> Leagues { get; set; }
+
+    public DbSet<Match> Matches { get; set; }
+
     public string DbPath { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -40,19 +44,19 @@ public class FootballLeagueDbContext : DbContext
             {
                 Id = 1,
                 Name = "Nebraska Huskers",
-                CreatedDate = DateTimeOffset.UtcNow.DateTime
+                CreatedDate = DateTimeOffset.UtcNow.DateTime,
             },
             new Team
             {
                 Id = 2,
                 Name = "Oklahoma Sooners",
-                CreatedDate = DateTimeOffset.UtcNow.DateTime
+                CreatedDate = DateTimeOffset.UtcNow.DateTime,
             },
             new Team
             {
                 Id = 3,
                 Name = "Miami Hurricanes",
-                CreatedDate = DateTimeOffset.UtcNow.DateTime
+                CreatedDate = DateTimeOffset.UtcNow.DateTime,
             }
         );
     }
