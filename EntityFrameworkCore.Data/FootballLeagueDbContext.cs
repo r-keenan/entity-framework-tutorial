@@ -1,3 +1,4 @@
+using System.Reflection;
 using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -39,25 +40,9 @@ public class FootballLeagueDbContext : DbContext
     // Creating seed data
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Team>().HasData(
-            new Team
-            {
-                Id = 1,
-                Name = "Nebraska Huskers",
-                CreatedDate = DateTimeOffset.UtcNow.DateTime,
-            },
-            new Team
-            {
-                Id = 2,
-                Name = "Oklahoma Sooners",
-                CreatedDate = DateTimeOffset.UtcNow.DateTime,
-            },
-            new Team
-            {
-                Id = 3,
-                Name = "Miami Hurricanes",
-                CreatedDate = DateTimeOffset.UtcNow.DateTime,
-            }
-        );
+        //modelBuilder.ApplyConfiguration(new TeamConfiguration());
+        //modelBuilder.ApplyConfiguration(new LeagueConfiguration());
+        // This applies all seed file/model configurations that are detected instead of applying each one individually like above.
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
